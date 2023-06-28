@@ -6,32 +6,42 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class MainActivity : AppCompatActivity(), ShoeAdapter.OnItemClickListener {
-
+    private val shoeListFragment = ShoeListFragment()
+    private val cartFragment = CartFragment()
     var shoppingCart: MutableList<Shoe> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val bottomNavigation: BottomNavigationView = findViewById(R.id.bottom_navigation)
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_home -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.container, shoeListFragment)
+                        .commit()
+                }
+                R.id.navigation_cart -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.container, cartFragment)
+                        .commit()
+                }
+            }
+            true
+        }
+
         loadShoppingCart()
         // Cargar el fragmento de la lista de zapatos al inicio
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, ShoeListFragment())
             .commit()
 
-        val viewCartButton: Button = findViewById(R.id.view_cart_button)
-
-
-        viewCartButton.setOnClickListener {
-            val cartFragment = CartFragment()
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, cartFragment)
-                .addToBackStack(null)
-                .commit()
-        }
     }
 
 
