@@ -5,31 +5,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class ShoeListFragment : Fragment(), ShoeAdapter.OnItemClickListener {
 
-    private lateinit var recyclerView: RecyclerView
+    private val shoppingCart = ShoppingCart
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_shoe_list, container, false)
-        recyclerView = view.findViewById(R.id.recycler_view)
-        return view
+        return inflater.inflate(R.layout.fragment_shoe_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
+        recyclerView.layoutManager = GridLayoutManager(context, 2)
         val shoeList = returnShoeList()
-        val adapter = ShoeAdapter(shoeList)
-        adapter.listener = this
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(context)
+
+        recyclerView.adapter = ShoeAdapter(shoeList, this)
     }
 
     override fun onItemClick(shoe: Shoe) {
@@ -38,25 +35,26 @@ class ShoeListFragment : Fragment(), ShoeAdapter.OnItemClickListener {
                 putParcelable("shoe", shoe)
             }
         }
-
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.container, productFragment)
-            .addToBackStack(null)
-            .commit()
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.nav_host_fragment, productFragment)
+            ?.addToBackStack(null)
+            ?.commit()
     }
 
     private fun returnShoeList(): List<Shoe> {
-        val shoeList = listOf(
-            Shoe("Zapato 1", "https://example.com/zapato1.jpg", 99.99),
-            Shoe("Zapato 2", "https://example.com/zapato2.jpg", 79.99),
-            Shoe("Zapato 3", "https://example.com/zapato3.jpg", 149.99),
-            Shoe("Zapato 4", "https://example.com/zapato1.jpg", 99.99),
-            Shoe("Zapato 5", "https://example.com/zapato2.jpg", 79.99),
-            Shoe("Zapato 6", "https://example.com/zapato3.jpg", 149.99),
-            Shoe("Zapato 7", "https://example.com/zapato1.jpg", 99.99),
-            Shoe("Zapato 8", "https://example.com/zapato2.jpg", 79.99),
-            Shoe("Zapato 9", "https://example.com/zapato3.jpg", 149.99),
-            Shoe("Zapato 10", "https://example.com/zapato1.jpg", 99.99)
+        var url =
+            "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/89afa6a48d7d4732b8daaead00ed1b45_9366/Start_Your_Run_Shoes_Black_GY9234_01_standard.jpg"
+        val shoeList = mutableListOf<Shoe>(
+            Shoe(1, "Zapato 1", 99.99, url),
+            Shoe(2, "Zapato 2", 79.99, url),
+            Shoe(3, "Zapato 3", 149.99, url),
+            Shoe(4, "Zapato 4", 99.99, url),
+            Shoe(5, "Zapato 5", 79.99, url),
+            Shoe(6, "Zapato 6", 149.99, url),
+            Shoe(7, "Zapato 7", 99.99, url),
+            Shoe(8, "Zapato 8", 79.99, url),
+            Shoe(9, "Zapato 9", 149.99, url),
+            Shoe(10, "Zapato 10", 99.99, url)
         )
         return shoeList
     }
