@@ -45,7 +45,7 @@ class ShoeAdapter(
         val shoe: Shoe = dataSet[position]
 
         holder.shoeName.text = shoe.name
-        holder.shoePrice.text = shoe.price.toString()
+        holder.shoePrice.text = "$" + shoe.price.toString()
 
         Glide.with(holder.view.context)
             .load(shoe.image)
