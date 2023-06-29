@@ -14,9 +14,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
         val navController = navHostFragment.navController
         bottomNavigationView.setupWithNavController(navController)
+
+
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id in arrayOf(R.id.shoeListFragment, R.id.cartFragment)) {
+                supportFragmentManager.popBackStack()
+            }
+        }
     }
+
 }
+
+
