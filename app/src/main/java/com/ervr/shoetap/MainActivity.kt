@@ -2,6 +2,7 @@ package com.ervr.shoetap
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -21,12 +22,12 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.setupWithNavController(navController)
 
 
-
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id in arrayOf(R.id.shoeListFragment, R.id.cartFragment)) {
-                supportFragmentManager.popBackStack()
+                supportFragmentManager.popBackStack(destination.id, FragmentManager.POP_BACK_STACK_INCLUSIVE)
             }
         }
+
     }
 
 }

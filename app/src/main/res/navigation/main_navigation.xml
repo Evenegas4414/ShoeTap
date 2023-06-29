@@ -9,7 +9,12 @@
         android:id="@+id/shoeListFragment"
         android:name="com.ervr.shoetap.ShoeListFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_shoe_list" />
+        tools:layout="@layout/fragment_shoe_list" >
+        <action
+            android:id="@+id/action_to_productFragment"
+            app:destination="@id/productFragment" />
+    </fragment>
+
 
     <fragment
         android:id="@+id/productFragment"

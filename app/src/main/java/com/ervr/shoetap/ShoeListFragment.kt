@@ -1,16 +1,15 @@
 package com.ervr.shoetap
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class ShoeListFragment : Fragment(), ShoeAdapter.OnItemClickListener {
-
-    private val shoppingCart = ShoppingCart
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,23 +21,10 @@ class ShoeListFragment : Fragment(), ShoeAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val shoeList = returnShoeList()
         val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = GridLayoutManager(context, 2)
-        val shoeList = returnShoeList()
-
         recyclerView.adapter = ShoeAdapter(shoeList, this)
-    }
-
-    override fun onItemClick(shoe: Shoe) {
-        val productFragment = ProductFragment().apply {
-            arguments = Bundle().apply {
-                putParcelable("shoe", shoe)
-            }
-        }
-        activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.nav_host_fragment, productFragment)
-            ?.addToBackStack(null)
-            ?.commit()
     }
 
     private fun returnShoeList(): List<Shoe> {
@@ -57,5 +43,10 @@ class ShoeListFragment : Fragment(), ShoeAdapter.OnItemClickListener {
             Shoe(10, "Zapato 10", 99.99, url)
         )
         return shoeList
+    }
+
+    override fun onItemClick(shoe: Shoe) {
+        val bundle = Bundle().apply { putParcelable("shoe", shoe) }
+        findNavController().navigate(R.id.productFragment, bundle)
     }
 }
