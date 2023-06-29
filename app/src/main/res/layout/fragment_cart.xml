@@ -14,6 +14,7 @@
         android:id="@+id/clear_cart_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:text="VACIAR CARRITO" />
 
 </LinearLayout>
